@@ -1,0 +1,8 @@
+
+*.vswp
+_vnote.json
+*.stackdump
+_v_recycle_bin/
+*.exe
+*.log
+*.aux
