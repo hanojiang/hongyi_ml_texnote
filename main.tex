@@ -57,9 +57,7 @@
 \end{enumerate}
 
 \section{回归问题}
-线性模型：$y=b+\sum w_i x_i$，其中$x_i$ 为输入数据的特征，$w_i$为权重，$b$为偏置。
-
-使用损失函数评价选定模型的好坏。如对于模型$f$，样本$x^n$，对应的输出真值为$\hat{y}$:
+线性模型：$y=b+\sum w_i x_i$，其中$x_i$ 为输入数据的特征，$w_i$为权重，$b$为偏置。使用损失函数评价选定模型的好坏。如对于模型$f$，样本$x^n$，对应的输出真值为$\hat{y}$:
 \[
 	L(f)=\sum_{n=1}^{N}\left( \hat{y}^n - f(x_{cp}^n) \right)^2
 \]
@@ -71,4 +69,27 @@
 \[
 	w ^ { * } , b ^ { * } = \arg \min _ { w , b } L ( w , b )= \arg \min _ { w , b } \sum _ { n = 1 } ^ { N } \left( \hat { y } ^ { n } - ( b + w \cdot x _ { c p } ^ { n } ) \right) ^ { 2 }
 \]
+为求得最优解，使用梯度下降法进行优化求解。若将$b$看做权重$w$的一部分，优化模型：
+\[
+	w^* = \arg \min_w L(w)
+\]
+权重通过梯度进行迭代：
+\[
+w ^1 \leftarrow w ^0 - \eta \left. \frac { d L } { d w } \right| _ {w = w^0}
+\]
+其中，$\eta$为学习率。梯度下降实例如图\ref{fig:gradientdescent}所示：
+\begin{figure}[hb]
+	\centering
+	\includegraphics[scale=0.8]{pic/gradient_descent}
+	\caption{gradient descent}
+	\label{fig:gradientdescent}
+\end{figure}
+对参数的偏导：
+\[
+	\frac{ \partial L}{\partial w} = \sum_{n=1}^{N} 2 \left( \hat{y}^n - (b+w \cdot x^n)  \right) (-x^n)
+\]
+\[
+	\frac{ \partial L}{\partial b} = -\sum_{n=1}^{N} 2 \left( \hat{y}^n - (b+w \cdot x^n)  \right)
+\]
+
 \end{document}
