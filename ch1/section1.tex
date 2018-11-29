@@ -1,0 +1,110 @@
+\section{机器学习简介}
+人工智能是我们想要达到的目标，机器学习则是实现人工智能的手段，深度学习则是机器学习的其中一种。
+
+那么机器学习是什么? 机器学习可以看做是从数据中学习一个函数 (function)，对于给定输入得到输出结果。如在语音辨识、图像识别等领域的应用。
+
+机器学习框架如图 \ref{fig:ml_framework} 所示，首先包含一系列函数 model 的集合，利用训练数据评价函数的品质，并挑选出最优函数模型。
+
+\begin{figure}[ht]
+	\centering
+	\includegraphics[scale=0.4]{./pic/ml_framework.png}
+	\caption{机器学习框架}
+	\label{fig:ml_framework}
+\end{figure}
+  
+详细步骤如图 \ref{fig:three_step} 所示，可以总结为：
+
+\begin{enumerate}
+	\item 挑选模型
+	\item 评价函数品质 goodness
+	\item 挑选最优函数 $f^*$
+\end{enumerate}
+	
+\begin{figure}[ht]
+	\centering
+	\includegraphics[scale=0.4]{./pic/three_step_of_ml.png}
+	\caption{机器学习三步骤}
+	\label{fig:three_step}
+\end{figure}
+
+机器学习的学习图谱如图 \ref{fig:ml_map} 所示,具体描述如下：
+
+\begin{figure}[ht]
+	\centering
+	\includegraphics[scale=0.4]{./pic/learning_map.png}
+	\caption{机器学习图谱}
+	\label{fig:ml_map}
+\end{figure}
+	
+\begin{enumerate}
+	\item 监督学习
+		\subitem 回归
+		\subitem 线性模型
+		\subitem 深度学习，非线性模型
+		\subitem 其它非线性模型，如SVM、决策树、knn。
+		\subitem structure learning
+	\item 无监督学习
+	\item 半监督学习
+	\item 迁移学习
+	\item 强化学习
+
+\end{enumerate}
+
+\section{回归问题}
+线性模型：$y=b+\sum w_i x_i$，其中$x_i$ 为输入数据的特征，$w_i$为权重，$b$为偏置。使用损失函数评价选定模型的好坏。如对于模型$f$，样本$x^n$，对应的输出真值为$\hat{y}$:
+\[
+	L(f)=\sum_{n=1}^{N}\left( \hat{y}^n - f(x_{cp}^n) \right)^2
+\]
+对于线性模型：
+\[
+	L(w,b)=\sum_{n=1}^{N}\left( \hat{y}^n - (b+w \cdot x_{xp}^n) \right)^2
+\]
+最优化模型：
+\[
+	w ^ { * } , b ^ { * } = \arg \min _ { w , b } L ( w , b )= \arg \min _ { w , b } \sum _ { n = 1 } ^ { N } \left( \hat { y } ^ { n } - ( b + w \cdot x _ { c p } ^ { n } ) \right) ^ { 2 }
+\]
+为求得最优解，使用梯度下降法进行优化求解。若将$b$看做权重$w$的一部分，优化模型：
+\[
+	w^* = \arg \min_w L(w)
+\]
+权重通过梯度进行迭代：
+\[
+w ^1 \leftarrow w ^0 - \eta \left. \frac { d L } { d w } \right| _ {w = w^0}
+\]
+其中，$\eta$为学习率。梯度下降实例如图\ref{fig:gradientdescent}所示：
+\begin{figure}[hb]
+	\centering
+	\includegraphics[scale=0.8]{pic/gradient_descent.png}
+	\caption{gradient descent}
+	\label{fig:gradientdescent}
+\end{figure}
+对参数的偏导：
+\begin{align*}
+	\frac{ \partial L}{\partial w} &= \sum_{n=1}^{N} 2 \left( \hat{y}^n - (b+w \cdot x^n)  \right) (-x^n) \\
+	\frac{ \partial L}{\partial b} &= -\sum_{n=1}^{N} 2 \left( \hat{y}^n - (b+w \cdot x^n)  \right)
+\end{align*}
+
+对于更为复杂的模型，如：
+\begin{align*}
+	y &= b + w_1 \cdot x + w_2 \cdot x^2 \\
+	y &= b + w_1 \cdot x + w_2 \cdot x^2 + w_3 \cdot x^3 \\
+	y &= b + w_1 \cdot x + w_2 \cdot x^2 + w_3 \cdot x^3 + \cdots + w_5 \cdot x^5
+\end{align*}
+过于复杂的模型在训练集上能够取得小的误差，但在测试集的误差会异常大，即发生了过拟合(overfitting)。同时对于复杂模型使用简单的模型会出现欠拟合现象，不同模型在训练集和测试集上的误差如图\ref{fig:overfitting}所示：
+\begin{figure}
+	\centering
+	\includegraphics[scale=0.5]{pic/overfitting.png}
+	\caption{过拟合现象}
+	\label{fig:overfitting}
+\end{figure}
+为缓解过拟合，可以通过正则化实现，对权重$w$加以约束。
+\[
+	L = \sum_{n=1}^{N} \left(\hat{y}_n - (b+ \sum w_i x_{ni}) \right) ^2 + \lambda  \sum w_i^2 
+\]
+正则化参数的选择不宜过大或过小，以宝可梦 cp 值回归模型为例，参数$\lambda$影响如图\ref{fig:regularization}所示：
+\begin{figure}
+	\centering
+	\includegraphics[scale=0.5]{pic/regularization}
+	\caption{正则化参数对模型误差的影响}
+	\label{fig:regularization}
+\end{figure}
