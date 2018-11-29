@@ -85,11 +85,23 @@ w ^1 \leftarrow w ^0 - \eta \left. \frac { d L } { d w } \right| _ {w = w^0}
 	\label{fig:gradientdescent}
 \end{figure}
 对参数的偏导：
-\[
-	\frac{ \partial L}{\partial w} = \sum_{n=1}^{N} 2 \left( \hat{y}^n - (b+w \cdot x^n)  \right) (-x^n)
-\]
-\[
-	\frac{ \partial L}{\partial b} = -\sum_{n=1}^{N} 2 \left( \hat{y}^n - (b+w \cdot x^n)  \right)
-\]
+\begin{align*}
+	\frac{ \partial L}{\partial w} &= \sum_{n=1}^{N} 2 \left( \hat{y}^n - (b+w \cdot x^n)  \right) (-x^n) \\
+	\frac{ \partial L}{\partial b} &= -\sum_{n=1}^{N} 2 \left( \hat{y}^n - (b+w \cdot x^n)  \right)
+\end{align*}
+
+对于更为复杂的模型，如：
+\begin{align*}
+	y &= b + w_1 \cdot x + w_2 \cdot x^2 \\
+	y &= b + w_1 \cdot x + w_2 \cdot x^2 + w_3 \cdot x^3 \\
+	y &= b + w_1 \cdot x + w_2 \cdot x^2 + w_3 \cdot x^3 + \cdots + w_5 \cdot x^5
+\end{align*}
+过于复杂的模型在训练集上能够取得小的误差，但在测试集的误差会异常大，即发生了过拟合(overfitting)。同时对于复杂不同模型在训练集和测试集上的误差如图\ref{fig:overfitting}所示：
+\begin{figure}
+	\centering
+	\includegraphics[scale=0.5]{pic/overfitting }
+	\caption{过拟合现象}
+	\label{fig:overfitting}
+\end{figure}
 
 \end{document}
