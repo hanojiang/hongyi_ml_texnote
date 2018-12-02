@@ -25,7 +25,7 @@
 \end{itemize}
 
 对于在实际训练模型过程中，训练集上得到的模型，通过 public 测试集得到的错误率与在 private 测试集上的错误率不一定是一致的。为了在没有 private 测试集的前提下能够较好的预知错误率，可以通过在训练集上划分训练集和验证集加以实现。
-如图\subref{subfig:validation}所示：同时为了充分利用训练集数据可以采用 N-折交叉验证。模型的正确率由 N 个正确率的均值决定。如图\subref{subfig:N_fold_cross_validation}所示。
+如图\ref{fig:cross_validation}{subfig:validation}所示：同时为了充分利用训练集数据可以采用 N-折交叉验证。模型的正确率由 N 个正确率的均值决定。如图\ref{fig:cross_validation}\subref{subfig:N_fold_cross_validation}所示。
 \begin{figure}
 	\centering
 
