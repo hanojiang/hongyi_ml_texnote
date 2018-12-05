@@ -34,14 +34,59 @@ w^{t+1} &= w^t - \frac{\eta^t}{\sigma^t}g^t\\
 w^{t+1} = w^t - \frac{\eta}{\sigma^t}g^t = \frac{\eta}{\sqrt{\sum_{i=0}^{t}(g^i)^2}}
 \end{equation}
 \begin{myquotation}{adagrad中的疑问}
-	当有大的梯度时，$g^t$导致大的步长，但分母$\sigma ^ t$导致小的步长，是否矛盾？
+	当有大的梯度时，$g^t$导致大的步长，但分母$\sigma ^ t$导致小的步长，是否矛盾？主要可以从两个方面解释，具体参照 PPT。
+	\begin{itemize}
+		\item 反差
+		\item 一阶微分除以二阶微分
+	\end{itemize}
 \end{myquotation}
 
 \subsection{随机梯度下降法 Stochastic Gradient Descent}
-
+一般的梯度下降法表示为：
+\begin{equation}\label{eq:gd}
+L = \sum _ { n } \left( \hat { y } ^ { n } - \left( b + \sum w _ { i } x _ { i } ^ { n } \right) \right) ^ { 2 }
+\end{equation}
+从式\eqref{eq:gd}中可以看出，梯度的求解需要所有样本参与计算。因此，计算是相对比较慢的。随机梯度下降法则是遇到一个样本，则对权重进行更新，见式\eqref{eq:sgd}因此，梯度更新相对是比较快的，相对的会造成迭代的不稳定。
+\begin{equation}\label{eq:sgd}
+L ^ { n } = \left( \hat { y } ^ { n } - \left( b + \sum w _ { i } x _ { i } ^ { n } \right) \right) ^ { 2 }
+\end{equation}
+两者的对比如图\ref{fig:gd_vs_sgd}所示。
+\begin{figure}
+	\centering
+	\includegraphics[scale=0.5]{pic/gd_vs_sgd}
+	\caption{梯度下降法与随机梯度下降法的对比}
+	\label{fig:gd_vs_sgd}
+\end{figure}
 \subsection{特征缩放}
+特征缩放的目的是减小不同特征间尺度上的差异对迭代的影响，比如特征$x_1$的量级在100，特征$x_2$在1左右，则特征$x_1$的微小变化会对预测值有大的影响，描述见图\ref{fig:feature_scaling}。
+\begin{figure}
+	\centering
+	\includegraphics[scale=0.5]{pic/feature_scaling}
+	\caption{特征缩放的解释}
+	\label{fig:feature_scaling}
+\end{figure}
 
+常用的特征缩放方法
+\begin{itemize}
+	\item normalization 特征缩放后，方差为1，均值为0.见式\eqref{eq:normalization}。
+	\item 归一化 0--1之间。
+\end{itemize}
+
+\begin{equation}\label{eq:normalization}
+x _ { i } ^ { r } \leftarrow \frac { x _ { i } ^ { r } - m _ { i } } { \sigma _ { i } }
+\end{equation}
 \subsection{梯度下降数学理论}
-
-
-
+\subsubsection{泰勒准则}
+函数$h(x)$在点$x_0$处可以展开为：
+\begin{align*}
+h(x) &= \sum_{k=0}^{\infty}\frac{h^k(x_0)}{k!}(x-x_0)^k\\
+	&=h(x_0) + h'(x_0)(x-x_0) + \frac{h''(x_0)}{x-x0)}(x-x_0)^k
+\end{align*}
+\subsubsection{多元泰勒展开}
+\[
+h ( x , y ) = h \left( x _ { 0 } , y _ { 0 } \right) + \frac { \partial h \left( x _ { 0 } , y _ { 0 } \right) } { \partial x } \left( x - x _ { 0 } \right) + \frac { \partial h \left( x _ { 0 } , y _ { 0 } \right) } { \partial y } \left( y - y _ { 0 } \right)
+\]
+线性近似时：
+\[
+h ( x , y ) \approx h \left( x _ { 0 } , y _ { 0 } \right) + \frac { \partial h \left( x _ { 0 } , y _ { 0 } \right) } { \partial x } \left( x - x _ { 0 } \right) + \frac { \partial h \left( x _ { 0 } , y _ { 0 } \right) } { \partial y } \left( y - y _ { 0 } \right)
+\]
