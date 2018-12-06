@@ -77,7 +77,7 @@ x _ { i } ^ { r } \leftarrow \frac { x _ { i } ^ { r } - m _ { i } } { \sigma _ 
 \end{equation}
 \subsection{梯度下降数学理论}
 \subsubsection{泰勒准则}
-函数$h(x)$在点$x_0$处可以展开为：
+函数$h(x)$在点$x_0$附近可以展开为：
 \begin{align*}
 h(x) &= \sum_{k=0}^{\infty}\frac{h^k(x_0)}{k!}(x-x_0)^k\\
 	&=h(x_0) + h'(x_0)(x-x_0) + \frac{h''(x_0)}{x-x0)}(x-x_0)^k
@@ -90,3 +90,35 @@ h ( x , y ) = h \left( x _ { 0 } , y _ { 0 } \right) + \frac { \partial h \left(
 \[
 h ( x , y ) \approx h \left( x _ { 0 } , y _ { 0 } \right) + \frac { \partial h \left( x _ { 0 } , y _ { 0 } \right) } { \partial x } \left( x - x _ { 0 } \right) + \frac { \partial h \left( x _ { 0 } , y _ { 0 } \right) } { \partial y } \left( y - y _ { 0 } \right)
 \]
+以二元损失函数$L(\theta)$为例，在以$\theta=(a,b)$为圆心，一定半径$r$画圆，$r$是泰勒展开能够线性近似的条件。
+\begin{align}
+\mathrm { L } ( \theta ) &\approx \mathrm { L } ( a , b ) + \frac { \partial \mathrm { L } ( a , b ) } { \partial \theta _ { 1 } } \left( \theta _ { 1 } - a \right) + \frac { \partial \mathrm { L } ( a , b ) } { \partial \theta _ { 2 } } \left( \theta _ { 2 } - b \right)\\
+s &= \mathrm { L } ( a , b )\\
+u &= \frac { \partial \mathrm { L } ( a , b ) } { \partial \theta _ { 1 } }\\
+v &= \frac { \partial \mathrm { L } ( a , b ) } { \partial \theta _ { 2 } }\\
+\mathrm { L } ( \theta ) &\approx s + u(\theta_1-a) + v(\theta_2-b)\\
+&(\theta_1-a)^2+(\theta_2-a)^2 \leq r^2
+\end{align}
+圆心$(a,b)$到圆上任意点$\theta=(\theta_1,\theta_2)$的向量可表示为：
+\[
+\left[ \begin{array} { l } { \Delta \theta _ { 1 } } \\ { \Delta \theta _ { 2 } } \end{array} \right] = 
+\left[ \begin{array} { l }  \theta_1 -a \\  \theta_2 - b  \end{array} \right]
+\]
+因此，向量$\Delta \theta$与$(u,v)$的夹角为$180^。$时，$\mathrm { L } ( \theta )$取得最小值。即：
+\[
+\left[ \begin{array} { l } { \Delta \theta _ { 1 } } \\ { \Delta \theta _ { 2 } } \end{array} \right] = 
+-\eta \left[ \begin{array} { l }  u \\  v  \end{array} \right]
+\]
+$\eta$的作用，调整$(\theta_1,\theta_2)$在圆上。故：
+\begin{equation}
+\left[ \begin{array} { l } { \theta _ { 1 } } \\ { \theta _ { 2 } } \end{array} \right] = \left[ \begin{array} { l } { a } \\ { b } \end{array} \right] - \eta \left[ \begin{array} { l } { u } \\ { v } \end{array} \right]
+\end{equation}
+
+这就解释了梯度下降法中迭代公式的原理。因此，不是权重每一步的迭代都能保证损失函数都能下降，因为，不能保证迭代步长使得在当前点处能够线性近似，形象的解释是，不合适的$\eta$使得$(\theta_1,\theta_2)$跑出了圆外。详细描述见图\ref{fig_math_of_gd}。
+\begin{figure}
+	\centering
+	\includegraphics[scale=0.5]{pic/taylor_series}
+	\includegraphics[scale=0.5]{pic/taylor_best}
+	\caption{梯度下降法的数学解释}
+	\label{fig_math_of_gd}
+\end{figure}
