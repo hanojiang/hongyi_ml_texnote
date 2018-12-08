@@ -1,4 +1,5 @@
 \section{逻辑回归}
+\subsection{逻辑回归的由来}
 从上一节的概率生成模型过渡到判别模型，可以引出逻辑回归的内容。不考虑，模型的实际分布如何，使用参数$w$和$b$确定一个概率模型$f_{w,b}=P(C_1|x)=\sigma(z)=b+\sum_i w_i x_i$，如同第\ref{sec:three_step}节三步骤从 function set 中选择模型，而评判模型的 goodness 通过极大似然确定，目标函数即通过选定的模型生成训练数据的概率。表示为：
 \begin{equation}
 L(w,b)=f_{w,b}(x_1)f_{w,b}(x_2)(1-f_{w,b}(x_3)) \cdots
@@ -68,6 +69,37 @@ w_{i+1} = w_i - \eta  \sum_n (\sigma(z) - \hat{y}^n) x^n_i
 	\label{fig:cross_entropy_vs_square_error}
 \end{figure}
 
+\subsection{多类别分类问题}
+对于多分类问题，使用 softmax 函数解决，三类别问题如图所示\ref{fig:softmax}。首先通过训练不同的二分类判别模型，计算新样本在不同二分类模型下的输出$z_i=w_i x+b_i$，经过 softmax 函数，输出归于 0--1之间，判别新样本类别，样本的真是类别为 one hot 向量。输入向量与目标类别的损失函数定义为 cross entropy。
+
+\begin{figure}
+	\centering
+	\includegraphics[scale=0.5]{pic/softmax}
+	\caption{softmax}
+	\label{fig:softmax}
+\end{figure}
+
+\subsection{逻辑回归的局限与深度学习的由来}
+逻辑回归是一种线性分类方法，如图示数据，明显的使用线性模型无法分类。对原始特征进行相同的合理变换，就可以使用逻辑回归分类，而这种变换方法也可以通过逻辑回归模型实现。
+\begin{figure}[htbp]
+	\centering
+	\includegraphics[scale=0.4]{pic/limition_log_reg}
+	\caption{逻辑回归不能处理的数据}
+	\label{fig:limition_log_reg}
+\end{figure}
+如图\ref{fig:transform_feature}所示，通过两个逻辑回归对二维特征进行变换，再使用一个逻辑回归模型进行分类。
+\begin{figure}[htbp]
+	\centering
+	{\subcaptionbox{特征变换}{%
+			\includegraphics[scale=0.4]{pic/transform_feature_01}}\quad
+	\subcaptionbox{分类}{%
+	\includegraphics[scale=0.4]{pic/transform_feature_02}}
+}
+\caption{使用逻辑回归进行特征变换与分类}
+\label{fig:transform_feature}
+\end{figure}
+
+深度学习的基本思想由此而来，通过前层对输入特征加以变换，最后使用 softmax 分类器分类。
 \subsection{liner regression 其它推导方法}
 
 对于线性回归模型 $y=\omega^T+b$ 输出的预测值 $y$ 都是实值，考虑二分类任务，$y_i\in\{0，1\}$。为了将实值 $y$ 对应到离散值，使用了 sigmoid 函数。如下：
