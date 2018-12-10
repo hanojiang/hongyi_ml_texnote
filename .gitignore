@@ -8,3 +8,5 @@ _v_recycle_bin/
 *.log
 *.aux
 *.gz
+_minted-main/
+*.out
