@@ -1,0 +1,30 @@
+%f
+\begin{figure}[htb]
+\centering
+\includegraphics[scale=0.4]{%(*.png *.xpm *.jpg%)}
+\caption{%<fig_caption%>}
+\label{fig:%<fig_label%>}
+\end{figure}
+
+%2f		
+\begin{figure}[htb]
+	\centering
+	
+	{\subcaptionbox{sub1_caption}{%
+			\includegraphics[scale=0.4]{pic1}}\quad
+		\subcaptionbox{sub1_caption}{%
+			\includegraphics[scale=0.4]{pic2}}
+	}
+	\caption{caption}
+	\label{fig:label}
+\end{figure}
+
+%mq
+\begin{myquotation}{title}
+
+\end{myquotation}	
+
+%e
+\begin{equation}
+
+\end{equation}
