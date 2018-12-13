@@ -136,5 +136,51 @@ Adam:将adagrad与RMSprop结合，具体如图\ref{fig:adam}。
 \subsubsection{及早停止}
 顾名思义，过拟合时在测试集上的正确率不减反增，所以选择合适的epoch停止网络训练，当然，这里的测试集指的是验证集。
 \subsubsection{正则化}
+$l_2$正则化：$\alpha \|w\|^2_2=\sum_i w_i^2$
 
+\[
+L'(w)=L(w) + \frac{1}{2}\alpha \|w\|^2_2  
+\]
+\[
+\frac{\partial L'(w)}{w_i}=\frac{\partial L(w)}{w_i} + \alpha w_i
+\]
+
+\[
+w^{t+1} = w^{t} - \eta (\frac{\partial L}{w} + \alpha w^t)=(1-\eta \alpha)w^t - \eta \frac{\partial L}{w}
+\]
+随着权重的迭代更新，$(1-\eta \alpha)$越来越小，逐渐接近于零。
+$l_1$正则化：$\alpha \|w\|_1 = \sum_i |w_i|$
+
+\[
+L'(w)=L(w) + \alpha \|w\|_1 
+\]
+\[
+\frac{\partial L'(w)}{w_i}=\frac{\partial L(w)}{w_i} + \alpha sgn(w_i)
+\]
+
+\[
+w^{t+1} = w^{t} - \eta (\frac{\partial L(w)}{w} + \alpha sgn(w^t))=w^t-\eta \frac{\partial L(w)}{w} -\eta \alpha sgn(w^t)
+\]
+
+在两种情形下，规范化的效果就是缩小权重。这符合我们的直觉，两种规范化都惩罚大的权重。
+但权重缩小的方式不同\footnote{电子书：Michael Nielsen，神经网络与深度学习}。在 L1 规范化中，权重通过一个常量$\eta \alpha sgn(w^t)$向 0 进行缩小。在 L2 规范化中，权
+重通过一个和 $w$ 成比例的量$(1-\eta \alpha)$进行缩小的。所以，当一个特定的权重绝对值 $|w|$ 很大时， L1 规范
+化的权重缩小得远比 L2 规范化要小得多。相反，当一个特定的权重绝对值 $|w|$ 很小时， L1 规范
+化的权重缩小得要比 L2 规范化大得多。最终的结果就是： L1 规范化倾向于聚集网络的权重在
+相对少量的高重要度连接上，而其他权重就会被驱使向 0 接近。
+
+一种形象的解释见图\ref{fig:regularization}：
+\begin{figure}[htb]
+	\centering
+	
+	{\subcaptionbox{l1 regularization}{%
+			\includegraphics[scale=0.4]{pic/regularization1}}\quad
+		\subcaptionbox{l2 regularization}{%
+			\includegraphics[scale=0.4]{pic/regularization2}}
+	}
+	\caption{l1 vs l2 regularization}
+	\label{fig:regularization}
+\end{figure}
+其它更为理论解释见知乎《深入理解L1、L2正则化》\footnote{\url{https://zhuanlan.zhihu.com/p/29360425}}。
 \subsubsection{dropout}
+与经典神经网络结构有所区别，在每一批量训练数据时，即前向传播和反向传播阶段，除了输入层和输出层的单元，其它单元有一定比率$p\%$失活。因此，对每一批训练数据得到的模型是不同的，训练结束后，对于测试数据使用的模型，所有权重均有保留，但权重取最终值的$1-p\%$。可以与过拟合时的图形解释见图\ref{fig:bias_and_variance}，每次得到的模型都是复杂的，方差大，但大量模型求取均值后就与实际模型基本一致，而每一批次数据使用dropout 得到的模型时不同的，因此提供了大量模型，对测试集数据使用的就是求取均值后的结果，因此对过拟合问题有所帮助。
